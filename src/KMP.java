@@ -1,23 +1,26 @@
-import javax.print.attribute.HashDocAttributeSet;
+import java.util.ArrayList;
+import java.util.List;
 
 public class KMP {
-    public static int KMPMatcher(String pattern, String text) {
-        int n = pattern.length();
-        int m = text.length();
-
+    public static List<Integer> KMPMatcher(String pattern, String text) {
+        int n = text.length();
+        int m = pattern.length();
         int[] pi = compute_prefix_function(pattern);
-        int q = 0;
-        int i = 0;
+        int q = 0; //index for pattern
+        int i = 0; // index for text
+        List<Integer> result = new ArrayList<>();
+        int counter = 0;
         //Scans the text from left to right
         while (i < n) {
-            if (pattern.charAt(q + 1) == text.charAt(i + 1)) {
+            if (pattern.charAt(q) == text.charAt(i)) {
                 q++;
                 i++;
                 if (q == m) {
                     //slide the patteren to the right
-                    return i - q;
+                    result.add(i - 1);
+                    q = pi[q - 1];
                 }
-                q = pi[q];
+
             } else {
                 if (q == 0) {
                     i++;
@@ -27,7 +30,7 @@ public class KMP {
             }
         }
 
-        return -1;
+        return result;
     }
 
     public static int[] compute_prefix_function(String pattern){
@@ -38,20 +41,24 @@ public class KMP {
         pi[0] = 0;
         while (pos < m){
             if(pattern.charAt(pos)  == pattern.charAt(cnd)){
+                cnd++;
                 pi[pos] = pi[cnd];
+                pos++;
             } else {
-                pi[pos] = cnd;
-                while (cnd <= 0 && pattern.charAt(pos) != pattern.charAt(cnd)){
-                    cnd = pi[cnd];
+                if(cnd != 0){
+                    cnd = pi[cnd - 1];
+                } else {
+                    pi[pos] = cnd;
+                    pos++;
                 }
             }
-            cnd++;
-            pos++;
         }
         return pi;
     }
 
     public static void main(String[] args){
-        System.out.println(KMPMatcher("AAB", "AABBBA"));
+        String pattern = "eher";
+        String text = "Anders Reher Christense";
+        System.out.println(KMPMatcher(pattern, text));
     }
 }
