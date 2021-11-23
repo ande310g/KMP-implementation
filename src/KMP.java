@@ -2,54 +2,52 @@ import java.util.*;
 import java.util.stream.IntStream;
 
 public class KMP {
-    public static List<Integer> KMPMatcher(int[] pattern, int[] text, boolean last) {
-        int n = text.length, m = pattern.length;
-        int[] pi = compute_prefix_function(pattern);
-        int q = 0, i = 0; //index for pattern, index for text
+    public static List<Integer> KMPmatcher(int[] pattern, int[] text, boolean last) {
+        int m = pattern.length;
+        int n = text.length;
+        int[] pi = computePrefixFunction(pattern);
+        int q = 0;
         List<Integer> result = new ArrayList<Integer>();
-        //Scans the text from left to right
-        while (i < n) {
-            if (pattern[q] == text[i]) {
-                q++;
-                i++;
-                if (q == m) {
-                    //slide the pattern to the right
-                    result.add(q - 1);
-                    if(!last) {
-                        return result;
-                    }
-                }
-
-            } else {
-                if (q == 0) {
-                    i++;
+        for (int i = 0; i < n; i++) {
+            while (q >= 0 && pattern[q] != text[i]) {
+                if (q > 0) {
+                    q = pi[q - 1];
                 } else {
-                    q = pi[q];
+                    q--;
                 }
             }
+            q++;
+            if (q == m) {
+                q = pi[m - 1];
+                result.add(i - m + 1);
+                if (!last) {
+                    return result;
+                }
+
+            }
+
+        }
+        if(result.size() == 0){
+            result.add(-1);
         }
         return result;
-
     }
 
-    public static int[] compute_prefix_function(int[] pattern){
+    public static int[] computePrefixFunction(int[] pattern) {
         int m = pattern.length;
         int[] pi = new int[m];
-        int pos = 1, cnd = 0;
         pi[0] = 0;
-        while (pos < m){
-            if(pattern[pos]  == pattern[cnd]){
-                cnd++;
-                pi[pos] = pi[cnd];
-                pos++;
-            } else {
-                if(cnd != 0){
-                    cnd = pi[cnd - 1];
+        int k = 0;
+        for (int i = 1; i < m; i++) {
+            while (k >= 0 && pattern[k] != pattern[i]) {
+                if (k - 1 >= 0) {
+                    k = pi[k - 1];
                 } else {
-                    pi[pos] = cnd;
-                    pos++;
+                    k--;
                 }
             }
+            k++;
+            pi[i] = k;
         }
         return pi;
     }
@@ -65,8 +63,9 @@ public class KMP {
 
 
     public static int[] arraySlicing(int[] arr, int start, int end){
-        return IntStream.range(start, end).map(i -> arr[i]).toArray();
+        return Arrays.stream(arr, start, end).toArray();
     }
+
 
     public static void main(String[] args){
         Integer start = null;
@@ -88,41 +87,43 @@ public class KMP {
         for(int i = 0; i < groundPhases.size(); i++){
             if(i == 0){
                 //Save the result as start
-                start = KMPMatcher(groundPhases.get(i), slope, false).get(0);
+                start = KMPmatcher(groundPhases.get(i), slope, false).get(0);
                 if(start == -1) {
                     System.out.println("Impossible");
                     System.exit(0);
                 }
-                slope = arraySlicing(slope, start + 1, slope.length);
+                System.arraycopy(slope, start + groundPhases.get(i).length, slope, 0, slope.length - start - 1);
+                System.out.println(Arrays.toString(groundPhases.get(i)));
                 System.out.println(Arrays.toString(slope));
-                System.out.println(start);
             } else if(i == groundPhases.size() - 1){
                 //Run it normal but save the result and break
-                List<Integer> result = KMPMatcher(groundPhases.get(i), slope, true);
+                List<Integer> result =KMPmatcher(groundPhases.get(i), slope, true);
                 end = result.get(result.size() - 1);
                 if(end == -1) {
                     System.out.println("Impossible");
                     System.exit(0);
                 }
+                System.out.println(Arrays.toString(groundPhases.get(i)));
+                System.out.println(Arrays.toString(slope));
             } else {
-                Integer result = KMPMatcher(groundPhases.get(i), slope, false).get(0);
+                Integer result = KMPmatcher(groundPhases.get(i), slope, false).get(0);
                 if(result == -1) {
                     System.out.println("Impossible");
                     System.exit(0);
                 }
-                slope = arraySlicing(slope, result + 1, slope.length);
+                System.arraycopy(slope, result + groundPhases.get(i).length, slope, 0, slope.length - result - 1);
+                System.out.println(Arrays.toString(groundPhases.get(i)));
+                System.out.println(Arrays.toString(slope));
             }
 
         }
+//        groundPhases.get(groundPhases.size() - 1).length
         if(start != null && end != null){
-            System.out.println(start + " " + (end + 1));
+            int realEnd = N - end;
+            System.out.println(start + 1 + " " + realEnd);
         } else {
             System.out.println("Impossible");
         }
-
-
-
-
 
     }
 }
