@@ -23,9 +23,7 @@ public class KMP {
                 if (!last) {
                     return result;
                 }
-
             }
-
         }
         if(result.size() == 0){
             result.add(-1);

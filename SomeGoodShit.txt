@@ -1,0 +1,156 @@
+List<Integer[]> groundPhases = new ArrayList<Integer[]>();
+        List<Integer[]> airPhases = new ArrayList<Integer[]>();
+        String groundLine;
+        String airLine;
+        for(int i = 0; i < G; i++){
+            groundLine = scanner.nextLine();
+            System.out.println(groundLine);
+            airLine = scanner.nextLine();
+            String[] groundStringArr = groundLine.split(" ");
+            String[] airStringArr = airLine.split(" ");
+            Integer[] groundIntArr = new Integer[groundStringArr.length];
+            Integer[] airIntArr = new Integer[groundIntArr.length];
+            for(int j = 0; j < groundStringArr.length; j++){
+                groundIntArr[j] = Integer.parseInt(groundStringArr[j]);
+            }
+            if(i != G - 1){
+                for(int j = 0; j < airStringArr.length; j++){
+                    airIntArr[j] = Integer.parseInt(airStringArr[j]);
+                }
+            }
+            groundPhases.add(groundIntArr);
+            airPhases.add(airIntArr);
+        }
+        for(int i=0;i<groundPhases.size();i++) {
+            System.out.println(Arrays.toString(groundPhases.get(i)));
+        }
+        for(int i=0;i<airPhases.size();i++) {
+            System.out.println(Arrays.toString(airPhases.get(i)));
+        }
+
+
+
+
+
+3
+-1 2 3
+1 2
+1 4 5
+
+
+int[] slope = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, -45, -12, -35, -6, 30, 4, -9, -20, 41, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -48, 39, 46, -16, 22, -33, -39, -4, -16, 28, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -28, 10, 2, 49, 27, 18, 22, -21, 6, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        int[] end = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, -45, -12, -35, -6, 30, 4, -9, -20, 41, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        List<Integer> result = KMPmatcher(slope, end, false);
+        System.out.println(result.get(0) - end.length );
+
+
+
+
+
+
+
+
+
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -28 10 2 49 27 18 22 -21 6 49 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, -45, -12, -35, -6, 30, 4, -9, -20, 41, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, -45, -12, -35, -6, 30, 4, -9, -20, 41, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public static int[] split(String line){
+        String[] lineSplit = line.split(" ");
+        int[] numArr = new int[lineSplit.length];
+        for(int i = 0; i < lineSplit.length; i++){
+            numArr[i] = Integer.parseInt(lineSplit[i]);
+        }
+        return numArr;
+    }
+
+    public static int[] arraySlicing(int[] arr, int start, int end){
+        return Arrays.stream(arr, start, end).toArray();
+    }
+
+
+    public static void main(String[] args){
+        Integer start = null;
+        Integer end = null;
+        Scanner scanner = new Scanner(System.in);
+        int[] NG = split(scanner.nextLine());
+        int N = NG[0], G = NG[1];
+        int[] slope = split(scanner.nextLine());
+        List<int[]> groundPhases = new ArrayList<int[]>();
+        for(int i = 0; i < G; i++){
+            int[] ground = split(scanner.nextLine());
+            if (i != G - 1){
+                scanner.nextLine();
+            }
+            groundPhases.add(ground);
+        }
+
+        //Running KMP on every possibility
+        for(int i = 0; i < groundPhases.size(); i++){
+            if(i == 0){
+                start = KMPmatcher(groundPhases.get(i), slope, false).get(0);
+                if(start == -1) {
+                    System.out.println("Impossible");
+                    System.exit(0);
+                }
+                slope = arraySlicing(slope, start + 3, slope.length);
+            } else if(i == groundPhases.size() - 1){
+                //Run it normal but save the result and break
+                List<Integer> result =KMPmatcher(groundPhases.get(i), slope, true);
+                end = result.get(result.size() - 1);
+                if(end == -1) {
+                    System.out.println("Impossible");
+                    System.exit(0);
+                }
+            } else {
+                Integer result = KMPmatcher(groundPhases.get(i), slope, false).get(0);
+                if(result == -1) {
+                    System.out.println("Impossible");
+                    System.exit(0);
+                }
+                slope = arraySlicing(slope, result + 3, slope.length);
+            }
+
+        }
+
+        if(start != null && end != null){
+            System.out.println(start + 1 + " " + (N - slope.length));
+        } else {
+            System.out.println("Impossible");
+        }
+
+    }
+
+
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 12 -45 -12 -35 -6 30 4 -9 -20 41 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -48 39 46 -16 22 -33 -39 -4 -16 28 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -28 10 2 49 27 18 22 -21 6 49 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
