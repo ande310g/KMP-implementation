@@ -34,23 +34,23 @@ public class KMP {
         return result;
     }
 
-    public static int[] computePrefixFunction(int[] pattern) {
-        int m = pattern.length, k = 0;
-        int[] pi = new int[m];
-        pi[0] = 0;
-        for (int i = 1; i < m; i++) {
-            while (k >= 0 && pattern[k] != pattern[i]) {
-                if (k - 1 >= 0) {
-                    k = pi[k - 1];
-                } else {
-                    k--;
+        public static int[] computePrefixFunction(int[] pattern) {
+            int m = pattern.length, k = 0;
+            int[] pi = new int[m];
+            pi[0] = 0;
+            for (int i = 1; i < m; i++) {
+                while (k >= 0 && pattern[k] != pattern[i]) {
+                    if (k - 1 >= 0) {
+                        k = pi[k - 1];
+                    } else {
+                        k--;
+                    }
                 }
+                k++;
+                pi[i] = k;
             }
-            k++;
-            pi[i] = k;
+            return pi;
         }
-        return pi;
-    }
 
     public static int[] split(String line){
         String[] lineSplit = line.split(" ");
@@ -99,12 +99,13 @@ public class KMP {
                     slope = arraySlicing(slope, start + groundPhases.get(i).length + 1, slope.length);
                     cut += start + groundPhases.get(i).length + 1;
                 } else if(i == groundPhases.size() - 1){
-                    //Run it normal but save the result and break
+                    //Last time running KMP and saving the result as end
                     List<Integer> result = kmpMatcher(groundPhases.get(i), slope, true);
                     end = result.get(result.size() - 1);
                     checkImpossible(end);
 
                 } else {
+                    //Run it normal but save the result and break
                     Integer result = kmpMatcher(groundPhases.get(i), slope, false).get(0);
                     checkImpossible(result);
                     slope = arraySlicing(slope, result + groundPhases.get(i).length + 1, slope.length);
